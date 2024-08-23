@@ -1,8 +1,67 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Set up an example subscribe-broadcast web page
 
-## Getting Started
+This repo provides an example subscribe-broadcast web page that demonstrates an implementation of a Subscribe button with [built-in user consent](https://docs.xmtp.org/consent/subscribe) provided by XMTP.
 
-First, run the development server:
+Follow these steps to set up an example subscribe-broadcast page like the one [deployed here](https://subscribe-broadcast.vercel.app/subscribe/button) and connected to the XMTP `dev` network.
+
+To get the most out of this repo, use it with the [broadcast-example-api repo](https://github.com/xmtp/broadcast-example-api). The broadcast-example-api repo provides an example broadcast API that you can use with the example subscribe-broadcast page to send broadcast messages and provide broadcast statuses. To learn how, see [Try the subscribe with built-in consent and broadcast flow](https://docs.xmtp.org/consent/subscribe-broadcast). 
+
+**Note**: This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+
+## Install dependencies
+
+```bash
+npm install
+```
+
+## Get a WalletConnect project ID
+
+If you don’t already have one, generate a WalletConnect AppKit project ID by visiting WalletConnect's project dashboard at `https://cloud.walletconnect.com/`.
+
+You’ll need the project ID in the next step.
+
+## Create .env file
+
+At the root of the `subscribe-broadcast` directory, create a `.env` file with the following contents. Replace `<your WalletConnect project ID>` with your WalletConnect project ID from the previous step.
+
+`NEXT_PUBLIC_API_HOST=http://localhost:6989` is a value based on the **broadcast-example-api** repo.
+
+```
+NEXT_PUBLIC_WALLET_CONNECT_ID=<your WalletConnect project ID>
+NEXT_PUBLIC_API_HOST=http://localhost:6989
+```
+
+## Define a broadcast
+
+With the example subscribe-broadcast page running, go to [http://localhost:3000/subscribe/button](http://localhost:3000/subscribe/button). 
+
+You should see a dropdown list of broadcasts and a **Subscribe** button.
+
+![subscribe-broadcast web page](https://raw.githubusercontent.com/xmtp/docs-xmtp-org/main/docs/pages/img/subscribe-broadcast-page.png)
+
+To edit the available broadcasts, see the `src/app/broadcastConfigs.ts` file.
+
+```tsx
+interface BroadcastConfig {
+  name: string;
+  address: string;
+}
+
+export const broadcastConfigs: BroadcastConfig[] = [
+  {
+    address: "0x62EEd858af7590fbCaE803d208c53ddBb0D1309c",
+    name: "Hello World Wild Web",
+  },
+];
+```
+
+In the **address** field, enter a string that is the raw 0x Ethereum address of the broadcast sending address.
+
+In the **name** field, enter a string that is the name of a broadcast.
+
+## Start the development server
+
+You must be using Node.js >= v18.17.0.
 
 ```bash
 npm run dev
@@ -14,23 +73,12 @@ pnpm dev
 bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Go to [http://localhost:3000/subscribe/button](http://localhost:3000/subscribe/button) to see the example subscribe-broadcast page running.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+![subscribe-broadcast web page](subscribe-broadcast-page.png)
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+You can edit the page by modifying `app/page.tsx`.
 
-## Learn More
+To use this subscribe-broadcast page to try out the flow to subscribe to a broadcast with built-in consent, use it with the [broadcast-example-api repo](https://github.com/xmtp/broadcast-example-api).
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+To learn how, see [Try the subscribe with built-in consent and broadcast flow](https://docs.xmtp.org/consent/subscribe-broadcast).
